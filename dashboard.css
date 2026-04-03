@@ -7,31 +7,37 @@ body{
 .dashboard{
     text-align:center;
     margin-top:80px;
+    background-image: url("images/WhatsApp\ Image\ 2026-04-03\ at\ 2.37.05\ PM.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    ;
 }
 
 .welcome{
-    font-size:50px;
-    margin-top: 200px;
+    font-size:100px;
+    margin-top: 100px;
 }
 
 .subtitle{
-    font-size:25px;
-    margin-bottom:40px;
-    color:darkblue;
+    font-size:50px;
+    margin-bottom:5px;
+    color: black;
+    font-weight: bold;
 }
 
 .cards{
     display:flex;
     justify-content:center;
     gap:40px;
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 .card{
     background:white;
     padding:60px;
     width:250px;
-    background:rgba(65, 190, 136, 0.675);
+    background:rgba(2, 14, 14, 0.855);
     box-shadow:0 5px 15px rgba(0,0,0,0.1);
     transition: 0.3s;
 }
@@ -40,7 +46,7 @@ body{
     margin-top:15px;
     padding:20px 20px;
     border:none;
-    background: #000;
+    background: #b84141;
     color:white;
     border-radius:5px;
     cursor:pointer;
@@ -52,7 +58,9 @@ body{
 }
 h2{
     font-size: 27px;
+    color: white;
 }
 p{
     margin-top: 10px;
+    color: white;
 }
