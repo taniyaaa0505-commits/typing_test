@@ -33,70 +33,55 @@ z:["zebra","zoo","zipper","zero","zucchini"]
 };
 
 const letters = "abcdefghijklmnopqrstuvwxyz".split("");
-
 let currentLetterIndex = 0;
 let wordIndex = 0;
 let currentword = "";
 let wordsCompleted = 0;
+let words = []; //shuffled words storage
+function shuffleArray (array){
+    for (let i= array.length -1; i>0; i--){
+        let j = Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
 
+    }
+}
 function loadWord(){
-
 const currentLetter = letters[currentLetterIndex];
-const words = alphabets[currentLetter];
-
-currentword = words[wordIndex];
-
-currentLetterDisplay.textContent = "Letter : " + currentLetter.toUpperCase();
-
-renderWord("");
-
-input.value = "";
-
+if(wordIndex ===0){
+    words = [...alphabets[currentLetter]];
+    shuffleArray(words);
 }
 
+currentword = words[wordIndex];
+currentLetterDisplay.textContent = "Letter : " + currentLetter.toUpperCase();
+renderWord("");
+input.value = "";
+}
 function renderWord(typed){
-
 let html="";
-
 for(let i=0;i<currentword.length;i++){
-
 if(i < typed.length){
-
 if(typed[i] === currentword[i]){
 html += `<span class="correct">${currentword[i]}</span>`;
 }else{
 html += `<span class="wrong">${currentword[i]}</span>`;
 }
-
 }
 else if(i === typed.length){
-
 html += `<span class="current">${currentword[i]}</span>`;
-
 }
 else{
-
 html += currentword[i];
-
 }
-
 }
-
 textDisplay.innerHTML = html;
-
 }
-
 input.addEventListener("input",()=>{
-
 const typed = input.value;
-
 renderWord(typed);
-
 if(typed === currentword){
-
 wordsCompleted++;
 wordIndex++;
-
 if(wordsCompleted === 5){
 currentLetterIndex++;
 wordIndex=0;
@@ -107,39 +92,24 @@ input.disabled = true;
 return;
 }
 }
-
 loadWord();
-
 }
-
 });
-
 document.addEventListener("keydown",(e)=>{
-
 document.querySelectorAll(".key").forEach(key=>{
-
 if(key.textContent === e.key){
 key.classList.add("pressed");
 }
-
 });
-
 });
-
 document.addEventListener("keyup",(e)=>{
-
 document.querySelectorAll(".key").forEach(key=>{
-
 if(key.textContent === e.key){
 key.classList.remove("pressed");
 }
-
 });
-
 });
-
 loadWord();
-
 restartBtn.addEventListener('click', () => {
 currentLetterIndex = 0;
 wordIndex = 0;
