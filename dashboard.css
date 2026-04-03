@@ -30,6 +30,7 @@ body{
     display:flex;
     justify-content:center;
     gap:40px;
+    flex-wrap: wrap;
     margin-top: 70px;
 }
 
@@ -57,10 +58,11 @@ body{
     transform: translateY(-5px);
 }
 h2{
-    font-size: 27px;
+    font-size: clamp(28px,4vw,48px);
     color: white;
 }
 p{
     margin-top: 10px;
+    font-size: clamp(16px,2vw,20px);
     color: white;
 }
