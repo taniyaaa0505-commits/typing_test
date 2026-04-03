@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <h2>Alphabet Trainer</h2>
+    <div class="letters">
+        <h3 id="current-letter">Letter : A </h3>
+       
+        <div id="text-display"></div>
+    </div>
+    <input type="text" id="hidden-input" autofocus />
+    <div id="keyboard">
+
+  <div class="row">
+    <span class="key">q</span>
+    <span class="key">w</span>
+    <span class="key">e</span>
+    <span class="key">r</span>
+    <span class="key">t</span>
+    <span class="key">y</span>
+    <span class="key">u</span>
+    <span class="key">i</span>
+    <span class="key">o</span>
+    <span class="key">p</span>
+  </div>
+
+  <div class="row">
+    <span class="key">a</span>
+    <span class="key">s</span>
+    <span class="key">d</span>
+    <span class="key">f</span>
+    <span class="key">g</span>
+    <span class="key">h</span>
+    <span class="key">j</span>
+    <span class="key">k</span>
+    <span class="key">l</span>
+  </div>
+
+  <div class="row">
+    <span class="key">z</span>
+    <span class="key">x</span>
+    <span class="key">c</span>
+    <span class="key">v</span>
+    <span class="key">b</span>
+    <span class="key">n</span>
+    <span class="key">m</span>
+  </div>
+  <div id="completion-popup" class="popup hidden">
+    <div class="pop-up card">
+      <h2> Practice Completed </h2>
+      <p>You have completed the practice session!</p>
+      <button id="restart-btn">Restart Practice</button>
+    </div>
+  </div>
+</div>
+    
+    <script src="practice.js"></script>
+</body>
+</html>
