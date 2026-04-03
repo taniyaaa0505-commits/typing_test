@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wgt@300;400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Typing Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+
 </head>
+
 <body>
-    <div class="container">
-        <title>Typing Masters</title>
-        <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
-        <div class="top-bar">
-           <div class="stats"><span> Time: <b id="time">60</b>Seconds</span></div> 
-            <div class="stats"><span> WPM: <b id="wpm">0</b></span></div>
-            <div class="stats"><span> Accuracy: <b id="accuracy">100</b>%</span></div>
-            <input type="text" id="hidden-input" autofocus />
-        </div>
-        <div id="text-display"></div>
-        
-        <button id="restart">Restart</button>
-        <footer>Build for practice . 2026</footer>
-    </div>
-    
-    <script src="texts.js"></script>
-    <script src="script.js"></script>
-    
+
+<div class="dashboard">
+
+<h1 class="welcome">Welcome {{user}}</h1>
+<p class="subtitle">Start Learning</p>
+
+<div class="cards">
+
+<div class="card">
+<h2>Typing Speed Test</h2>
+<p>Test your speed with a timed typing challenge.</p>
+<a href="timer.html">
+<button>Start Test</button>
+</a>
+</div>
+
+<div class="card">
+<h2>Practice Mode</h2>
+<p>Practice typing letters and improve accuracy.</p>
+<a href="practice.html">
+<button>Start Practice</button>
+</a>
+</div>
+
+</div>
+
+</div>
+<script>
+let user = "Taniya";
+document.querySelector(".welcome").innerText = "Welcome " + user;
+</script>
 </body>
 </html>
