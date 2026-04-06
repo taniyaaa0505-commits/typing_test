@@ -2,36 +2,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Type Master — Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Type Master — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <div class="db-root">
-    <div class="bg-grid"></div>
-    <div class="glow-orb one"></div>
-    <div class="glow-orb two"></div>
+<div class="db-root">
+  <div class="bg-grid"></div>
+  <div class="glow-orb one"></div>
+  <div class="glow-orb two"></div>
 
-    <!-- Top Bar -->
-    <header class="topbar">
-      <div class="logo">
-        <div class="logo-icon">
-          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="4" width="14" height="9" rx="2" stroke="#0a0c10" stroke-width="1.5"/>
-            <path d="M4 8h1M7 8h1M10 8h1M4 10.5h8" stroke="#0a0c10" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        TYPE_MASTER
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="4" width="14" height="9" rx="2" stroke="#0a0c10" stroke-width="1.5"/>
+          <path d="M4 8h1M7 8h1M10 8h1M4 10.5h8" stroke="#0a0c10" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
       </div>
-      <nav class="nav-pills">
-        <span class="nav-pill active">Dashboard</span>
-        
-      </nav>
-    </header>
+      TYPE_MASTER
+    </div>
+    <nav class="nav-pills">
+      <span class="nav-pill active">Dashboard</span>
+    </nav>
+  </header>
+
+  <!-- Main content: vertically centered, no scroll -->
+  <main class="main-content">
 
     <!-- Hero Section -->
     <section class="hero">
@@ -41,61 +43,61 @@
       </div>
       <h1 class="hero-title">Welcome back,<br><span class="accent">User</span></h1>
       <p class="hero-sub">Track your speed. Build your accuracy. Master the keyboard.</p>
-
-      <div class="stats-row">
-        <div class="stat-item">
-          <div class="stat-val" id="best-wpm">—</div>
-          <div class="stat-label">Best WPM</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-val" id="accuracy">—</div>
-          <div class="stat-label">Accuracy</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-val" id="sessions">0</div>
-          <div class="stat-label">Sessions</div>
-        </div>
-      </div>
     </section>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-val" id="best-wpm">—</div>
+        <div class="stat-label">Best WPM</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="accuracy">—</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="sessions">0</div>
+        <div class="stat-label">Sessions</div>
+      </div>
+    </div>
 
     <!-- Cards -->
     <div class="cards-grid">
-      <div class="card green">
+      <a href="timer.html" class="card green">
         <div class="card-icon">⚡</div>
         <div class="card-tag">Speed test</div>
         <h2 class="card-title">Typing Speed Test</h2>
         <p class="card-desc">Race against the clock. Measure your WPM and push your limits with timed challenges.</p>
-        <a href="timer.html" class="card-btn">Start Test <span class="arrow">→</span></a>
-      </div>
-
-      <div class="card blue">
+        <span class="card-btn">Start Test <span class="arrow">→</span></span>
+      </a>
+      <a href="practice.html" class="card blue">
         <div class="card-icon">🎯</div>
         <div class="card-tag">Practice</div>
         <h2 class="card-title">Practice Mode</h2>
         <p class="card-desc">No pressure, just progress. Improve accuracy and build muscle memory at your own pace.</p>
-        <a href="practice.html" class="card-btn">Start Practice <span class="arrow">→</span></a>
-      </div>
+        <span class="card-btn">Start Practice <span class="arrow">→</span></span>
+      </a>
     </div>
 
-    <div class="kb-hint">
-      press <kbd>T</kbd> to test · <kbd>P</kbd> to practice
-    </div>
+  </main>
+
+  <div class="kb-hint">
+    press <kbd>T</kbd> to test · <kbd>P</kbd> to practice
   </div>
+</div>
 
-  <script>
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 't') window.location.href = 'timer.html';
-      if (e.key.toLowerCase() === 'p') window.location.href = 'practice.html';
-    });
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 't') window.location.href = 'timer.html';
+    if (e.key.toLowerCase() === 'p') window.location.href = 'practice.html';
+  });
 
-    // Load stats from localStorage if available
-    const bestWpm = localStorage.getItem('bestWpm');
-    const accuracy = localStorage.getItem('accuracy');
-    const sessions = localStorage.getItem('sessions');
-    if (bestWpm) document.getElementById('best-wpm').textContent = bestWpm;
-    if (accuracy) document.getElementById('accuracy').textContent = accuracy + '%';
-    if (sessions) document.getElementById('sessions').textContent = sessions;
-  </script>
+  const bestWpm = localStorage.getItem('bestWpm');
+  const accuracy = localStorage.getItem('accuracy');
+  const sessions = localStorage.getItem('sessions');
+  if (bestWpm) document.getElementById('best-wpm').textContent = bestWpm;
+  if (accuracy) document.getElementById('accuracy').textContent = accuracy + '%';
+  if (sessions) document.getElementById('sessions').textContent = sessions;
+</script>
 </body>
 </html>

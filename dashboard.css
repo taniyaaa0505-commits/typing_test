@@ -1,5 +1,6 @@
 /* ===========================
-   TYPE MASTER â€” Dashboard CSS
+   TYPE MASTER â€“ Dashboard CSS
+   No-scroll, fits any screen
    =========================== */
 
 *, *::before, *::after {
@@ -8,16 +9,23 @@
   padding: 0;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
   background: #0a0c10;
   color: #e2e8f0;
-  min-height: 100vh;
 }
 
+/* ---- Root: full viewport flex column ---- */
 .db-root {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -50,10 +58,11 @@ body {
 .topbar {
   position: relative;
   z-index: 10;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 40px;
+  padding: clamp(10px, 1.5vh, 18px) clamp(20px, 3vw, 40px);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -61,7 +70,7 @@ body {
 
 .logo {
   font-family: 'Space Mono', monospace;
-  font-size: 14px;
+  font-size: clamp(11px, 1.1vw, 14px);
   font-weight: 700;
   color: #4ade80;
   letter-spacing: 0.1em;
@@ -71,8 +80,8 @@ body {
 }
 
 .logo-icon {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   background: #4ade80;
   border-radius: 7px;
   display: flex;
@@ -81,20 +90,14 @@ body {
   flex-shrink: 0;
 }
 
-.logo-icon svg {
-  width: 17px;
-  height: 17px;
-}
+.logo-icon svg { width: 16px; height: 16px; }
 
-.nav-pills {
-  display: flex;
-  gap: 4px;
-}
+.nav-pills { display: flex; gap: 4px; }
 
 .nav-pill {
-  padding: 7px 16px;
+  padding: 6px 14px;
   border-radius: 24px;
-  font-size: 13px;
+  font-size: clamp(11px, 1vw, 13px);
   font-weight: 500;
   color: rgba(255,255,255,0.4);
   cursor: pointer;
@@ -102,24 +105,33 @@ body {
   border: 1px solid transparent;
   user-select: none;
 }
-
 .nav-pill:hover {
   color: rgba(255,255,255,0.7);
   background: rgba(255,255,255,0.05);
 }
-
 .nav-pill.active {
   background: rgba(74,222,128,0.1);
   color: #4ade80;
   border-color: rgba(74,222,128,0.22);
 }
 
-/* ---- Hero ---- */
-.hero {
+/* ---- Main content: grows to fill remaining height, centers everything ---- */
+.main-content {
   position: relative;
   z-index: 5;
-  padding: 64px 40px 44px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2vh, 32px) clamp(20px, 3vw, 40px);
+  min-height: 0;
+}
+
+/* ---- Hero ---- */
+.hero {
   text-align: center;
+  margin-bottom: clamp(12px, 2.2vh, 28px);
 }
 
 .badge {
@@ -129,11 +141,11 @@ body {
   background: rgba(74,222,128,0.08);
   border: 1px solid rgba(74,222,128,0.18);
   color: #4ade80;
-  font-size: 11px;
+  font-size: clamp(9px, 0.75vw, 11px);
   font-weight: 600;
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 24px;
-  margin-bottom: 22px;
+  margin-bottom: clamp(8px, 1.5vh, 16px);
   font-family: 'Space Mono', monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -155,21 +167,19 @@ body {
 
 .hero-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: clamp(36px, 6vw, 56px);
+  font-size: clamp(24px, 4.5vh, 52px);
   font-weight: 600;
   line-height: 1.1;
   color: #f1f5f9;
-  margin-bottom: 14px;
+  margin-bottom: clamp(6px, 1vh, 12px);
   letter-spacing: -0.025em;
 }
-
 .hero-title .accent { color: #4ade80; }
 
 .hero-sub {
-  font-size: 16px;
+  font-size: clamp(12px, 1.4vh, 16px);
   font-weight: 400;
   color: rgba(255,255,255,0.38);
-  margin-bottom: 52px;
   letter-spacing: 0.01em;
 }
 
@@ -177,31 +187,30 @@ body {
 .stats-row {
   display: inline-flex;
   align-items: center;
-  gap: 0;
-  margin-bottom: 56px;
+  margin-bottom: clamp(12px, 2.5vh, 32px);
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 14px;
-  padding: 20px 0;
+  padding: clamp(10px, 1.5vh, 18px) 0;
 }
 
 .stat-item {
-  padding: 0 36px;
+  padding: 0 clamp(18px, 2.5vw, 36px);
   border-right: 1px solid rgba(255,255,255,0.07);
 }
 .stat-item:last-child { border-right: none; }
 
 .stat-val {
   font-family: 'Space Mono', monospace;
-  font-size: 26px;
+  font-size: clamp(18px, 2.5vh, 26px);
   font-weight: 700;
   color: #f1f5f9;
   line-height: 1;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .stat-label {
-  font-size: 10px;
+  font-size: clamp(8px, 0.9vh, 10px);
   font-weight: 500;
   color: rgba(255,255,255,0.28);
   text-transform: uppercase;
@@ -210,21 +219,18 @@ body {
 
 /* ---- Cards Grid ---- */
 .cards-grid {
-  position: relative;
-  z-index: 5;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  padding: 0 40px 48px;
-  max-width: 840px;
-  margin: 0 auto;
+  gap: clamp(10px, 1.5vh, 20px);
+  width: 100%;
+  max-width: 800px;
 }
 
 .card {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 18px;
-  padding: 30px;
+  border-radius: 16px;
+  padding: clamp(16px, 2.5vh, 28px) clamp(16px, 2vw, 28px);
   cursor: pointer;
   transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
   position: relative;
@@ -245,101 +251,89 @@ body {
 .card.green:hover {
   border-color: rgba(74,222,128,0.28);
   background: rgba(74,222,128,0.03);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
-
 .card.blue:hover {
   border-color: rgba(96,165,250,0.28);
   background: rgba(96,165,250,0.03);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .card-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 11px;
+  width: clamp(36px, 4vh, 46px);
+  height: clamp(36px, 4vh, 46px);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  font-size: 22px;
+  margin-bottom: clamp(10px, 1.5vh, 18px);
+  font-size: clamp(16px, 2.2vh, 22px);
 }
-
 .card.green .card-icon { background: rgba(74,222,128,0.1); }
 .card.blue  .card-icon { background: rgba(96,165,250,0.1); }
 
 .card-tag {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
+  font-size: clamp(8px, 0.9vh, 10px);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
-
 .card.green .card-tag { color: #4ade80; }
 .card.blue  .card-tag { color: #60a5fa; }
 
 .card-title {
-  font-size: 20px;
+  font-size: clamp(15px, 2vh, 20px);
   font-weight: 600;
   color: #f1f5f9;
-  margin-bottom: 10px;
+  margin-bottom: clamp(6px, 1vh, 10px);
   letter-spacing: -0.01em;
 }
 
 .card-desc {
-  font-size: 13px;
+  font-size: clamp(11px, 1.3vh, 13px);
   font-weight: 400;
   color: rgba(255,255,255,0.36);
-  line-height: 1.65;
-  margin-bottom: 24px;
+  line-height: 1.6;
+  margin-bottom: clamp(12px, 1.8vh, 22px);
 }
 
 .card-btn {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 13px;
+  font-size: clamp(11px, 1.2vh, 13px);
   font-weight: 600;
   font-family: 'DM Sans', sans-serif;
-  padding: 10px 20px;
+  padding: clamp(7px, 1vh, 10px) clamp(14px, 1.5vw, 20px);
   border-radius: 9px;
   border: 1px solid;
   cursor: pointer;
   transition: background 0.2s ease;
   text-decoration: none;
 }
-
 .card.green .card-btn {
   background: rgba(74,222,128,0.12);
   border-color: rgba(74,222,128,0.28);
   color: #4ade80;
 }
-.card.green .card-btn:hover {
-  background: rgba(74,222,128,0.22);
-}
-
+.card.green .card-btn:hover { background: rgba(74,222,128,0.22); }
 .card.blue .card-btn {
   background: rgba(96,165,250,0.12);
   border-color: rgba(96,165,250,0.28);
   color: #60a5fa;
 }
-.card.blue .card-btn:hover {
-  background: rgba(96,165,250,0.22);
-}
+.card.blue .card-btn:hover { background: rgba(96,165,250,0.22); }
 
-.arrow {
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
+.arrow { transition: transform 0.2s ease; display: inline-block; }
 .card:hover .arrow { transform: translateX(4px); }
 
 /* ---- Keyboard Hint ---- */
 .kb-hint {
   position: fixed;
-  bottom: 18px;
-  right: 28px;
+  bottom: 16px;
+  right: 24px;
   z-index: 10;
   font-family: 'Space Mono', monospace;
   font-size: 10px;
@@ -361,10 +355,9 @@ kbd {
 
 /* ---- Responsive ---- */
 @media (max-width: 600px) {
-  .topbar { padding: 14px 20px; }
+  html, body { overflow: auto; }
+  .db-root { height: auto; min-height: 100vh; }
+  .topbar { padding: 12px 16px; }
   .nav-pills { display: none; }
-  .hero { padding: 40px 20px 32px; }
-  .stats-row { flex-wrap: wrap; }
-  .stat-item { padding: 12px 24px; }
-  .cards-grid { grid-template-columns: 1fr; padding: 0 20px 40px; }
+  .cards-grid { grid-template-columns: 1fr; }
 }
