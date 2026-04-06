@@ -1,64 +1,113 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Type Master — Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Alphabet Trainer</h2>
-    <div class="letters">
-        <h3 id="current-letter">Letter : A </h3>
-       
-        <div id="text-display"></div>
+<div class="db-root">
+  <div class="bg-grid"></div>
+  <div class="glow-orb one"></div>
+  <div class="glow-orb two"></div>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="4" width="14" height="9" rx="2" stroke="#0a0c10" stroke-width="1.5"/>
+          <path d="M4 8h1M7 8h1M10 8h1M4 10.5h8" stroke="#0a0c10" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      TYPE_MASTER
     </div>
-    <input type="text" id="hidden-input" autofocus />
-    <div id="keyboard">
+    <nav class="nav-pills">
+      <a href="index.html" class="nav-pill">Dashboard</a>
+      <span class="nav-pill active">Practice</span>
+    </nav>
+  </header>
 
-  <div class="row">
-    <span class="key">q</span>
-    <span class="key">w</span>
-    <span class="key">e</span>
-    <span class="key">r</span>
-    <span class="key">t</span>
-    <span class="key">y</span>
-    <span class="key">u</span>
-    <span class="key">i</span>
-    <span class="key">o</span>
-    <span class="key">p</span>
-  </div>
+  <!-- Main Content -->
+  <main class="main-content">
 
-  <div class="row">
-    <span class="key">a</span>
-    <span class="key">s</span>
-    <span class="key">d</span>
-    <span class="key">f</span>
-    <span class="key">g</span>
-    <span class="key">h</span>
-    <span class="key">j</span>
-    <span class="key">k</span>
-    <span class="key">l</span>
-  </div>
+    <!-- Left column: info + text display -->
+    <div class="practice-left">
+      <div class="section-badge">
+        <span class="badge-dot"></span>
+        Practice Mode
+      </div>
 
-  <div class="row">
-    <span class="key">z</span>
-    <span class="key">x</span>
-    <span class="key">c</span>
-    <span class="key">v</span>
-    <span class="key">b</span>
-    <span class="key">n</span>
-    <span class="key">m</span>
-  </div>
+      <div class="letter-label">Current Letter</div>
+      <div class="letter-display" id="current-letter">A</div>
+
+      <!-- Progress bar -->
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-label" id="progress-label">0 / 26</span>
+      </div>
+
+      <!-- Word display -->
+      <div id="text-display"></div>
+
+      <input type="text" id="hidden-input" autofocus autocomplete="off" />
+    </div>
+
+    <!-- Right column: keyboard -->
+    <div class="practice-right">
+      <div class="kb-label">Keyboard</div>
+      <div id="keyboard">
+        <div class="row">
+          <span class="key">q</span><span class="key">w</span><span class="key">e</span>
+          <span class="key">r</span><span class="key">t</span><span class="key">y</span>
+          <span class="key">u</span><span class="key">i</span><span class="key">o</span>
+          <span class="key">p</span>
+        </div>
+        <div class="row">
+          <span class="key">a</span><span class="key">s</span><span class="key">d</span>
+          <span class="key">f</span><span class="key">g</span><span class="key">h</span>
+          <span class="key">j</span><span class="key">k</span><span class="key">l</span>
+        </div>
+        <div class="row">
+          <span class="key">z</span><span class="key">x</span><span class="key">c</span>
+          <span class="key">v</span><span class="key">b</span><span class="key">n</span>
+          <span class="key">m</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Completion Popup -->
   <div id="completion-popup" class="popup hidden">
-    <div class="pop-up card">
-      <h2> Practice Completed </h2>
-      <p>You have completed the practice session!</p>
-      <button id="restart-btn">Restart Practice</button>
+    <div class="popup-card">
+      <div class="popup-icon">🎯</div>
+      <h2 class="popup-title">Practice Complete!</h2>
+      <p class="popup-sub">You've mastered all 26 letters. Great work!</p>
+      <div class="popup-actions">
+        <button id="restart-btn" class="btn-primary">Restart Practice</button>
+        <a href="index.html" class="btn-secondary">Back to Dashboard</a>
+      </div>
     </div>
+  </div>
+
+  <div class="kb-hint">
+    press <kbd>Esc</kbd> to go back
   </div>
 </div>
-    
-    <script src="practice.js"></script>
+
+<script src="practice.js"></script>
+<script>
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') window.location.href = 'index.html';
+  });
+</script>
 </body>
 </html>
