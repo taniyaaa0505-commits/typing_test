@@ -7,20 +7,19 @@
 <title>Type Master — Speed Test</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="timer-page">
 <div class="db-root">
   <div class="bg-grid"></div>
   <div class="glow-orb one"></div>
   <div class="glow-orb two"></div>
 
-  <!-- Top Bar -->
   <header class="topbar">
     <div class="logo">
       <div class="logo-icon">
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
           <rect x="1" y="4" width="14" height="9" rx="2" stroke="#0a0c10" stroke-width="1.5"/>
           <path d="M4 8h1M7 8h1M10 8h1M4 10.5h8" stroke="#0a0c10" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
@@ -32,12 +31,10 @@
       <a href="practice.html" class="nav-pill">Practice</a>
       <span class="nav-pill active">Speed Test</span>
     </nav>
+    <div class="topbar-spacer"></div>
   </header>
 
-  <!-- Main Content -->
   <main class="main-content">
-
-    <!-- Stats Row -->
     <div class="stats-row">
       <div class="stat-item">
         <div class="stat-val" id="time">60</div>
@@ -53,24 +50,25 @@
       </div>
     </div>
 
-    <!-- Progress bar -->
     <div class="progress-wrap">
+      <div class="progress-label-row">
+        <span>Progress</span>
+        <span id="progress-label">60s</span>
+      </div>
       <div class="progress-track">
-        <div class="progress-bar"></div>
+        <div class="progress-bar" id="progress-bar"></div>
       </div>
     </div>
 
-    <!-- Text Display -->
-    <div class="text-card">
+    <div class="text-card" onclick="document.getElementById('hidden-input').focus()">
       <div class="section-badge">
         <span class="badge-dot"></span>
         Speed Test
       </div>
       <div id="text-display"></div>
-      <input type="text" id="hidden-input" autofocus autocomplete="off" />
+      <input type="text" id="hidden-input" autofocus autocomplete="off" spellcheck="false" />
     </div>
 
-    <!-- Restart button -->
     <button id="restart" class="btn-restart">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <path d="M1 7a6 6 0 1 0 1.2-3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -78,7 +76,6 @@
       </svg>
       Restart
     </button>
-
   </main>
 
   <div class="kb-hint">
@@ -86,15 +83,61 @@
   </div>
 </div>
 
+<div id="results-overlay">
+  <div class="results-card">
+    <div class="results-title">— Test Complete —</div>
+    <div class="results-wpm" id="res-wpm">0</div>
+    <div class="results-wpm-label">Words Per Minute</div>
+    <div class="results-grid">
+      <div class="results-stat">
+        <div class="results-stat-val" id="res-accuracy">0%</div>
+        <div class="results-stat-label">Accuracy</div>
+      </div>
+      <div class="results-stat">
+        <div class="results-stat-val" id="res-chars">0</div>
+        <div class="results-stat-label">Characters</div>
+      </div>
+    </div>
+    <button class="results-btn" id="res-restart">Try Again</button>
+  </div>
+</div>
+
 <script src="texts.js"></script>
 <script src="script.js"></script>
 <script>
+  const TOTAL = 60;
+  const progressBar = document.getElementById('progress-bar');
+  const progressLabel = document.getElementById('progress-label');
+  const timeEl = document.getElementById('time');
+
+  const observer = new MutationObserver(() => {
+    const remaining = parseInt(timeEl.textContent) || 0;
+    progressBar.style.width = (remaining / TOTAL * 100) + '%';
+    progressLabel.textContent = remaining + 's';
+    timeEl.classList.remove('urgent', 'warn');
+    if (remaining <= 10) timeEl.classList.add('urgent');
+    else if (remaining <= 20) timeEl.classList.add('warn');
+  });
+  observer.observe(timeEl, { childList: true, characterData: true, subtree: true });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') window.location.href = 'index.html';
     if (e.key === 'Tab') {
       e.preventDefault();
       document.getElementById('restart').click();
     }
+  });
+
+  window.showResults = function(wpm, accuracy, chars) {
+    document.getElementById('res-wpm').textContent = wpm;
+    document.getElementById('res-accuracy').textContent = accuracy + '%';
+    document.getElementById('res-chars').textContent = chars;
+    document.getElementById('results-overlay').classList.add('show');
+  };
+
+  document.getElementById('res-restart').addEventListener('click', () => {
+    document.getElementById('results-overlay').classList.remove('show');
+    document.getElementById('restart').click();
   });
 </script>
 </body>

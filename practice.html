@@ -7,11 +7,12 @@
 <title>Type Master — Practice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="practice-page">
 <div class="db-root">
+
   <div class="bg-grid"></div>
   <div class="glow-orb one"></div>
   <div class="glow-orb two"></div>
@@ -20,49 +21,53 @@
   <header class="topbar">
     <div class="logo">
       <div class="logo-icon">
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
           <rect x="1" y="4" width="14" height="9" rx="2" stroke="#0a0c10" stroke-width="1.5"/>
           <path d="M4 8h1M7 8h1M10 8h1M4 10.5h8" stroke="#0a0c10" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
       </div>
       TYPE_MASTER
     </div>
+
     <nav class="nav-pills">
       <a href="index.html" class="nav-pill">Dashboard</a>
       <span class="nav-pill active">Practice</span>
+      <a href="timer.html" class="nav-pill">Timer</a>
     </nav>
+
+    <div class="topbar-spacer"></div>
   </header>
 
-  <!-- Main Content -->
-  <main class="main-content">
+  <!-- Main Stage -->
+  <main class="stage">
 
-    <!-- Left column: info + text display -->
-    <div class="practice-left">
-      <div class="section-badge">
-        <span class="badge-dot"></span>
-        Practice Mode
-      </div>
-
-      <div class="letter-label">Current Letter</div>
+    <!-- Big Letter -->
+    <div class="letter-area">
+      <div class="letter-hint">Current letter</div>
       <div class="letter-display" id="current-letter">A</div>
-
-      <!-- Progress bar -->
-      <div class="progress-wrap">
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <span class="progress-label" id="progress-label">0 / 26</span>
-      </div>
-
-      <!-- Word display -->
-      <div id="text-display"></div>
-
-      <input type="text" id="hidden-input" autofocus autocomplete="off" />
     </div>
 
-    <!-- Right column: keyboard -->
-    <div class="practice-right">
-      <div class="kb-label">Keyboard</div>
+    <!-- Word Box -->
+    <div class="typing-area">
+      <div id="text-display"></div>
+      <div class="key-hint">
+        <kbd>Space</kbd> next word &nbsp;·&nbsp; <kbd>Esc</kbd> quit
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-area">
+      <div class="progress-header">
+        <span class="progress-label">Progress</span>
+        <span class="progress-label" id="progress-label">0 / 26 letters</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Keyboard -->
+    <div class="kb-area">
       <div id="keyboard">
         <div class="row">
           <span class="key">q</span><span class="key">w</span><span class="key">e</span>
@@ -85,6 +90,14 @@
 
   </main>
 
+  <!-- Footer dots -->
+  <footer class="footer-bar">
+    <div class="letter-dots" id="letter-dots"></div>
+  </footer>
+
+  <!-- Hidden input -->
+  <input type="text" id="hidden-input" autofocus autocomplete="off" />
+
   <!-- Completion Popup -->
   <div id="completion-popup" class="popup hidden">
     <div class="popup-card">
@@ -98,14 +111,21 @@
     </div>
   </div>
 
-  <div class="kb-hint">
-    press <kbd>Esc</kbd> to go back
-  </div>
 </div>
 
 <script src="practice.js"></script>
 <script>
-  document.addEventListener('keydown', (e) => {
+  /* Build 26 alphabet dots in footer */
+  const dotsEl = document.getElementById('letter-dots');
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
+    const d = document.createElement('div');
+    d.className = 'l-dot';
+    d.title = l;
+    d.dataset.letter = l;
+    dotsEl.appendChild(d);
+  });
+
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape') window.location.href = 'index.html';
   });
 </script>
