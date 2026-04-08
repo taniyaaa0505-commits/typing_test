@@ -66,7 +66,7 @@ input.addEventListener('input', () => {
         spans[inputText.length].classList.add('current');
     }
     //update wpm and accuracy
-    let accuracy = totalTyped === 0 ? 100 : Math.round((totalCorrect / totalTyped) * 100);
+    let accuracy = totalTyped === 0 ? 0 : Math.round((totalCorrect / totalTyped) * 100);
     accuracyDisplay.innerText = accuracy;
     let wpm = Math.round((totalCorrect / 5) / ((60 - time) / 60));
     wpmDisplay.innerText = wpm;
