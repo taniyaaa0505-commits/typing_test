@@ -1,95 +1,144 @@
-//elements
-const textDisplay = document.getElementById('text-display');
-const input = document.getElementById('hidden-input');
+// ── Elements ────────────────────────────────────────────────
+const textDisplay   = document.getElementById('text-display');
+const input         = document.getElementById('hidden-input');
 const restartButton = document.getElementById('restart');
-
-//variables
-let time = 60; //timer
-let interval;
-let started = false;
-const timeDisplay = document.getElementById('time');
-let totalTyped = 0; //wpm and accuracy
-let totalCorrect = 0;
-const wpmDisplay = document.getElementById('wpm');
+const timeDisplay   = document.getElementById('time');
+const wpmDisplay    = document.getElementById('wpm');
 const accuracyDisplay = document.getElementById('accuracy');
-//state
+
+// ── Constants ────────────────────────────────────────────────
+const TOTAL_TIME = 60;
+
+// ── State ────────────────────────────────────────────────────
+let time        = TOTAL_TIME;
+let interval    = null;
+let started     = false;
 let currentText = '';
-//load random text
-function loadsentence(){
-    currentText = texts[Math.floor(Math.random() * texts.length)];
-    textDisplay.innerHTML = '';
-    currentText.split('').forEach((char,index) => {
-        const span = document.createElement('span');
-        span.innerText = char;
-        if (index === 0) span.classList.add('current');
-        textDisplay.appendChild(span);
-    });
 
-input.value = "";
+// Cumulative counters — never reset between sentences
+let totalCorrectChars = 0; // correct chars across ALL sentences
+let totalTypedChars   = 0; // every char typed (right or wrong)
+
+// ── Load a random sentence ───────────────────────────────────
+function loadSentence() {
+  currentText = texts[Math.floor(Math.random() * texts.length)];
+  textDisplay.innerHTML = '';
+
+  currentText.split('').forEach((char, i) => {
+    const span = document.createElement('span');
+    span.innerText = char;
+    if (i === 0) span.classList.add('current');
+    textDisplay.appendChild(span);
+  });
+
+  input.value = '';
 }
-//input logic
+
+// ── WPM calculation ──────────────────────────────────────────
+// Standard: (correct chars / 5) / elapsed minutes
+function calcWPM() {
+  const elapsed = (TOTAL_TIME - time) / 60; // in minutes
+  if (elapsed <= 0) return 0;
+  return Math.round((totalCorrectChars / 5) / elapsed);
+}
+
+// ── Input handler ────────────────────────────────────────────
 input.addEventListener('input', () => {
-    //timer
-    if (!started) {
-        started = true;
 
-        interval = setInterval(() => {
-            time--;
-            timeDisplay.innerText = time;
-            if (time <= 0) {
-                clearInterval(interval);
-                input.disabled = true;
+  // Start timer on first keystroke
+  if (!started) {
+    started = true;
+    interval = setInterval(() => {
+      time--;
+      timeDisplay.innerText = time;
+      // Update WPM every second while typing
+      wpmDisplay.innerText = calcWPM();
 
+      if (time <= 0) {
+        clearInterval(interval);
+        input.disabled = true;
+        showFinalResults();
+      }
+    }, 1000);
+  }
+
+  const typed = input.value;
+  const spans = textDisplay.querySelectorAll('span');
+
+  // ── Mark each character ──────────────────────────────────
+  spans.forEach((span, i) => {
+    span.classList.remove('current', 'correct', 'wrong');
+    const ch = typed[i];
+    if (ch == null) return;               // not yet reached
+    if (ch === span.innerText) span.classList.add('correct');
+    else                       span.classList.add('wrong');
+  });
+
+  // Advance cursor
+  if (typed.length < spans.length) {
+    spans[typed.length].classList.add('current');
+  }
+
+  // ── Accuracy: based on all chars typed so far ────────────
+  // Count correct chars in current input
+  let correctNow = 0;
+  spans.forEach((span, i) => {
+    if (typed[i] != null && typed[i] === span.innerText) correctNow++;
+  });
+
+  // How many chars were typed since the last sentence ended
+  const charsThisSentence = typed.length;
+
+  // Accuracy = (cumulative correct + correct-so-far) / (cumulative typed + typed-so-far)
+  const totalC = totalCorrectChars + correctNow;
+  const totalT = totalTypedChars   + charsThisSentence;
+  const accuracy = totalT === 0 ? 100 : Math.round((totalC / totalT) * 100);
+  accuracyDisplay.innerText = accuracy;
+
+  // Update live WPM
+  wpmDisplay.innerText = calcWPM();
+
+  // ── Sentence completed ───────────────────────────────────
+  if (typed === currentText) {
+    // Bank the stats for this sentence before loading next
+    totalTypedChars   += typed.length;
+    totalCorrectChars += correctNow;
+    loadSentence();
+  }
+});
+
+// ── Show results when time runs out ─────────────────────────
+function showFinalResults() {
+  const finalWPM      = calcWPM();
+  const totalT        = totalTypedChars;
+  const accuracy      = totalT === 0 ? 100 : Math.round((totalCorrectChars / totalT) * 100);
+
+  // If timer.html has the results overlay, use it
+  if (typeof window.showResults === 'function') {
+    window.showResults(finalWPM, accuracy, totalCorrectChars);
+  }
 }
-        }, 1000);
-    }
 
-    const inputText = input.value;
-
-    const spans = textDisplay.querySelectorAll('span');
-    //wpm and accuracy
-    totalTyped = inputText.length;
-    totalCorrect = 0;
-    spans.forEach((span,index) => {
-        const char = inputText[index];
-        span.classList.remove('current');
-        if (char == null) {
-            span.classList.remove('correct', 'wrong');
-        } else if (char === span.innerText) {
-            span.classList.add('correct');
-            totalCorrect++;
-        } else {
-            span.classList.add('wrong');
-        }
-    });//move curdor
-    if(inputText.length<spans.length){
-        spans[inputText.length].classList.add('current');
-    }
-    //update wpm and accuracy
-    let accuracy = totalTyped === 0 ? 0 : Math.round((totalCorrect / totalTyped) * 100);
-    accuracyDisplay.innerText = accuracy;
-    let wpm = Math.round((totalCorrect / 5) / ((60 - time) / 60));
-    wpmDisplay.innerText = wpm;
-
-    // move to next sentence
-    if (inputText === currentText) {
-        loadsentence();
-    }
-});
-//restart
+// ── Restart ──────────────────────────────────────────────────
 restartButton.addEventListener('click', () => {
-    clearInterval(interval);
-    time = 60;
-    timeDisplay.innerText = time;
-    totalTyped=0;
-    totalCorrect=0;
-    wpmDisplay.innerText=0;
-    accuracyDisplay.innerText=100;
-    started=false;
-    input.value= "";
-    input.disabled = false;
-    loadsentence();
-    input.focus();
-});
-loadsentence();
+  clearInterval(interval);
 
+  // Reset all state
+  time              = TOTAL_TIME;
+  started           = false;
+  totalCorrectChars = 0;
+  totalTypedChars   = 0;
+
+  // Reset displays
+  timeDisplay.innerText     = time;
+  wpmDisplay.innerText      = 0;
+  accuracyDisplay.innerText = 100;
+  input.disabled            = false;
+
+  loadSentence();
+  input.focus();
+});
+
+// ── Init ─────────────────────────────────────────────────────
+loadSentence();
+input.focus();
