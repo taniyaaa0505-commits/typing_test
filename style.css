@@ -845,3 +845,237 @@ kbd {
   transform: translateY(-1px);
 }
 .results-btn:active { transform: translateY(0); }
+
+
+
+/* ============================================================
+   TIMER PAGE â€” Results Overlay (distinct from practice popup)
+   ============================================================ */
+
+#results-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  align-items: center;
+  justify-content: center;
+}
+#results-overlay.show { display: flex; }
+
+/* Card â€” sharp, terminal-inspired, different from the rounded practice popup */
+.timer-results-card {
+  background: #080b12;
+  border: 1px solid rgba(74, 222, 128, 0.18);
+  border-radius: 6px;
+  width: 460px;
+  max-width: 92vw;
+  position: relative;
+  overflow: hidden;
+  animation: timerCardIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:
+    0 0 0 1px rgba(74,222,128,0.06),
+    0 0 80px rgba(74,222,128,0.07),
+    0 40px 100px rgba(0,0,0,0.6);
+}
+
+/* Top accent line â€” laser-thin gradient */
+.timer-results-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(74,222,128,0.6) 30%,
+    rgba(96,165,250,0.6) 70%,
+    transparent 100%
+  );
+}
+
+/* Scan-line texture overlay */
+.timer-results-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.012) 2px,
+    rgba(255,255,255,0.012) 4px
+  );
+  pointer-events: none;
+}
+
+@keyframes timerCardIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Header */
+.timer-results-header {
+  padding: 20px 28px 0;
+}
+.timer-results-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+
+/* Hero net speed */
+.timer-net-speed-wrap {
+  padding: 20px 28px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.timer-net-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-bottom: 6px;
+}
+.timer-net-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 72px;
+  font-weight: 700;
+  color: #4ade80;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  /* number glow */
+  text-shadow: 0 0 40px rgba(74,222,128,0.35);
+}
+.timer-net-unit {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  margin-top: 6px;
+}
+
+/* Breakdown row: WPM Ã— Accuracy = Net */
+.timer-breakdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 20px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.timer-breakdown-item {
+  flex: 1;
+  text-align: center;
+}
+.timer-breakdown-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  line-height: 1;
+}
+.timer-breakdown-val.accent {
+  color: #60a5fa;
+  text-shadow: 0 0 20px rgba(96,165,250,0.3);
+}
+.timer-breakdown-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  margin-top: 5px;
+}
+.timer-breakdown-divider {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  color: rgba(255,255,255,0.15);
+  padding: 0 4px;
+  flex-shrink: 0;
+  margin-bottom: 18px; /* align with val, above label */
+}
+
+/* Chars typed row */
+.timer-chars-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.timer-chars-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+}
+.timer-chars-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Action buttons */
+.timer-results-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 28px 24px;
+}
+
+.timer-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.28);
+  border-radius: 4px;
+  color: #4ade80;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.timer-btn-primary:hover {
+  background: rgba(74,222,128,0.18);
+  box-shadow: 0 0 20px rgba(74,222,128,0.12);
+}
+.timer-btn-primary:active {
+  background: rgba(74,222,128,0.08);
+}
+
+.timer-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.25);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.timer-btn-ghost:hover {
+  color: rgba(255,255,255,0.5);
+  border-color: rgba(255,255,255,0.12);
+}

@@ -83,55 +83,104 @@
   </div>
 </div>
 
+<!-- Results Overlay — timer page specific -->
 <div id="results-overlay">
-  <div class="results-card">
-    <div class="results-title">— Test Complete —</div>
-    <div class="results-wpm" id="res-wpm">0</div>
-    <div class="results-wpm-label">Words Per Minute</div>
-    <div class="results-grid">
-      <div class="results-stat">
-        <div class="results-stat-val" id="res-accuracy">0%</div>
-        <div class="results-stat-label">Accuracy</div>
+  <div class="timer-results-card">
+
+    <div class="timer-results-header">
+      <span class="timer-results-eyebrow">— Test Complete —</span>
+    </div>
+
+    <!-- Net Speed = hero stat -->
+    <div class="timer-net-speed-wrap">
+      <div class="timer-net-label">Net Speed</div>
+      <div class="timer-net-value" id="res-net">0</div>
+      <div class="timer-net-unit">wpm × accuracy</div>
+    </div>
+
+    <!-- Breakdown row -->
+    <div class="timer-breakdown">
+      <div class="timer-breakdown-item">
+        <div class="timer-breakdown-val" id="res-wpm">0</div>
+        <div class="timer-breakdown-label">Raw WPM</div>
       </div>
-      <div class="results-stat">
-        <div class="results-stat-val" id="res-chars">0</div>
-        <div class="results-stat-label">Characters</div>
+      <div class="timer-breakdown-divider">×</div>
+      <div class="timer-breakdown-item">
+        <div class="timer-breakdown-val" id="res-accuracy">0%</div>
+        <div class="timer-breakdown-label">Accuracy</div>
+      </div>
+      <div class="timer-breakdown-divider">=</div>
+      <div class="timer-breakdown-item">
+        <div class="timer-breakdown-val accent" id="res-net2">0</div>
+        <div class="timer-breakdown-label">Net WPM</div>
       </div>
     </div>
-    <button class="results-btn" id="res-restart">Try Again</button>
+
+    <!-- Chars typed -->
+    <div class="timer-chars-row">
+      <span class="timer-chars-label">Characters typed</span>
+      <span class="timer-chars-val" id="res-chars">0</span>
+    </div>
+
+    <!-- Actions -->
+    <div class="timer-results-actions">
+      <button class="timer-btn-primary" id="res-restart">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 7a6 6 0 1 0 1.2-3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M1 3.4V7h3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Try Again
+      </button>
+      <a href="index.html" class="timer-btn-ghost">Back to Dashboard</a>
+    </div>
   </div>
 </div>
 
 <script src="texts.js"></script>
 <script src="script.js"></script>
 <script>
+  /* ── Progress bar — watches #time via MutationObserver ── */
   const TOTAL = 60;
-  const progressBar = document.getElementById('progress-bar');
+  const progressBar   = document.getElementById('progress-bar');
   const progressLabel = document.getElementById('progress-label');
-  const timeEl = document.getElementById('time');
+  const timeEl        = document.getElementById('time');
 
   const observer = new MutationObserver(() => {
     const remaining = parseInt(timeEl.textContent) || 0;
     progressBar.style.width = (remaining / TOTAL * 100) + '%';
     progressLabel.textContent = remaining + 's';
     timeEl.classList.remove('urgent', 'warn');
-    if (remaining <= 10) timeEl.classList.add('urgent');
+    if (remaining <= 10)      timeEl.classList.add('urgent');
     else if (remaining <= 20) timeEl.classList.add('warn');
   });
   observer.observe(timeEl, { childList: true, characterData: true, subtree: true });
 
+  /* ── Keyboard shortcuts ── */
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') window.location.href = 'index.html';
+    if (e.key === 'Escape') {
+      // if results open, close it; else go back
+      const overlay = document.getElementById('results-overlay');
+      if (overlay.classList.contains('show')) {
+        overlay.classList.remove('show');
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
     if (e.key === 'Tab') {
       e.preventDefault();
       document.getElementById('restart').click();
     }
   });
 
+  /* ── Results overlay ── */
+  // script.js calls window.showResults(wpm, accuracy, chars)
   window.showResults = function(wpm, accuracy, chars) {
-    document.getElementById('res-wpm').textContent = wpm;
+    const net = Math.round(wpm * (accuracy / 100));
+    document.getElementById('res-wpm').textContent      = wpm;
     document.getElementById('res-accuracy').textContent = accuracy + '%';
-    document.getElementById('res-chars').textContent = chars;
+    document.getElementById('res-chars').textContent    = chars;
+    document.getElementById('res-net').textContent      = net;
+    document.getElementById('res-net2').textContent     = net;
     document.getElementById('results-overlay').classList.add('show');
   };
 
