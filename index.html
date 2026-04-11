@@ -12,12 +12,17 @@
 </head>
 <body>
 <div class="db-root">
+
+  <!-- Particle canvas -->
+  <canvas id="particles"></canvas>
+
   <div class="bg-grid"></div>
   <div class="glow-orb one"></div>
   <div class="glow-orb two"></div>
+  <div class="glow-orb three"></div>
 
   <!-- Top Bar -->
-  <header class="topbar">
+  <header class="topbar reveal" style="--d:0ms">
     <div class="logo">
       <div class="logo-icon">
         <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,75 +34,146 @@
     </div>
     <nav class="nav-pills">
       <span class="nav-pill active">Dashboard</span>
+      <a href="practice.html" class="nav-pill">Practice</a>
+      <a href="timer.html" class="nav-pill">Speed Test</a>
     </nav>
+    <div class="topbar-right">
+      <div class="streak-pill" id="streak-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 7 8 7 13a5 5 0 0010 0c0-5-5-11-5-11z" fill="#fb923c"/><circle cx="12" cy="13" r="2" fill="#fef3c7"/></svg>
+        <span id="streak-count">0</span> day streak
+      </div>
+    </div>
   </header>
 
-  <!-- Main content: vertically centered, no scroll -->
+  <!-- Main -->
   <main class="main-content">
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Hero -->
+    <section class="hero reveal" style="--d:80ms">
       <div class="badge">
         <span class="badge-dot"></span>
-        Ready to type
+        <span id="badge-text">Ready to type</span>
       </div>
-      <h1 class="hero-title">Welcome back,<br><span class="accent">User</span></h1>
-      <p class="hero-sub">Track your speed. Build your accuracy. Master the keyboard.</p>
+      <h1 class="hero-title">Welcome back,<br><span class="accent" id="hero-name">Typist</span></h1>
+      <p class="hero-sub" id="rotating-sub">Track your speed. Build your accuracy. Master the keyboard.</p>
     </section>
 
-    <!-- Stats -->
-    <div class="stats-row">
+    <!-- Stats Row -->
+    <div class="stats-row reveal" style="--d:160ms">
       <div class="stat-item">
-        <div class="stat-val" id="best-wpm">—</div>
-        <div class="stat-label">Best WPM</div>
+        <div class="stat-icon green">⚡</div>
+        <div>
+          <div class="stat-val" id="best-wpm" data-target="0">—</div>
+          <div class="stat-label">Best WPM</div>
+        </div>
       </div>
+      <div class="stat-divider"></div>
       <div class="stat-item">
-        <div class="stat-val" id="accuracy">—</div>
-        <div class="stat-label">Accuracy</div>
+        <div class="stat-icon blue">🎯</div>
+        <div>
+          <div class="stat-val" id="best-acc" data-target="0">—</div>
+          <div class="stat-label">Best Accuracy</div>
+        </div>
       </div>
+      <div class="stat-divider"></div>
       <div class="stat-item">
-        <div class="stat-val" id="sessions">0</div>
-        <div class="stat-label">Sessions</div>
+        <div class="stat-icon amber">🔥</div>
+        <div>
+          <div class="stat-val" id="best-net" data-target="0">—</div>
+          <div class="stat-label">Best Net WPM</div>
+        </div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-icon purple">📊</div>
+        <div>
+          <div class="stat-val" id="sessions" data-target="0">0</div>
+          <div class="stat-label">Sessions</div>
+        </div>
       </div>
     </div>
 
-    <!-- Cards -->
-    <div class="cards-grid">
+    <!-- Sparkline + Recent sessions -->
+    <div class="middle-row reveal" style="--d:240ms">
+
+      <!-- WPM Graph -->
+      <div class="graph-card">
+        <div class="graph-header">
+          <div>
+            <div class="graph-title">WPM History</div>
+            <div class="graph-sub">Last 10 sessions</div>
+          </div>
+          <div class="graph-legend">
+            <span class="legend-dot green"></span><span>WPM</span>
+            <span class="legend-dot blue" style="margin-left:12px"></span><span>Net</span>
+          </div>
+        </div>
+        <canvas id="wpm-chart" height="90"></canvas>
+        <div class="graph-empty" id="graph-empty">Complete a speed test to see your progress</div>
+      </div>
+
+      <!-- Recent Sessions -->
+      <div class="sessions-card">
+        <div class="sessions-header">
+          <div class="graph-title">Recent Sessions</div>
+          <button class="clear-btn" id="clear-btn" title="Clear history">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            Clear
+          </button>
+        </div>
+        <div class="sessions-list" id="sessions-list">
+          <div class="sessions-empty">No sessions yet — start a speed test!</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Action Cards -->
+    <div class="cards-grid reveal" style="--d:320ms">
+
       <a href="timer.html" class="card green">
-        <div class="card-icon">⚡</div>
-        <div class="card-tag">Speed test</div>
+        <div class="card-shimmer"></div>
+        <div class="card-top">
+          <div class="card-icon-wrap green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="card-tag green">Speed Test</div>
+        </div>
         <h2 class="card-title">Typing Speed Test</h2>
-        <p class="card-desc">Race against the clock. Measure your WPM and push your limits with timed challenges.</p>
-        <span class="card-btn">Start Test <span class="arrow">→</span></span>
+        <p class="card-desc">Race against the clock. Measure your WPM and push your limits with 60-second challenges.</p>
+        <div class="card-footer">
+          <span class="card-btn green">Start Test <span class="arrow">→</span></span>
+          <span class="card-shortcut"><kbd>T</kbd></span>
+        </div>
       </a>
+
       <a href="practice.html" class="card blue">
-        <div class="card-icon">🎯</div>
-        <div class="card-tag">Practice</div>
+        <div class="card-shimmer"></div>
+        <div class="card-top">
+          <div class="card-icon-wrap blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="card-tag blue">Practice</div>
+        </div>
         <h2 class="card-title">Practice Mode</h2>
-        <p class="card-desc">No pressure, just progress. Improve accuracy and build muscle memory at your own pace.</p>
-        <span class="card-btn">Start Practice <span class="arrow">→</span></span>
+        <p class="card-desc">No pressure, just progress. Build muscle memory through all 26 letters at your own pace.</p>
+        <div class="card-footer">
+          <span class="card-btn blue">Start Practice <span class="arrow">→</span></span>
+          <span class="card-shortcut"><kbd>P</kbd></span>
+        </div>
       </a>
+
     </div>
 
   </main>
 
-  <div class="kb-hint">
-    press <kbd>T</kbd> to test · <kbd>P</kbd> to practice
+  <!-- Footer hint -->
+  <div class="kb-hint reveal" style="--d:400ms">
+    <kbd>T</kbd> speed test &nbsp;·&nbsp; <kbd>P</kbd> practice
   </div>
+
 </div>
 
-<script>
-  document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 't') window.location.href = 'timer.html';
-    if (e.key.toLowerCase() === 'p') window.location.href = 'practice.html';
-  });
-
-  const bestWpm = localStorage.getItem('bestWpm');
-  const accuracy = localStorage.getItem('accuracy');
-  const sessions = localStorage.getItem('sessions');
-  if (bestWpm) document.getElementById('best-wpm').textContent = bestWpm;
-  if (accuracy) document.getElementById('accuracy').textContent = accuracy + '%';
-  if (sessions) document.getElementById('sessions').textContent = sessions;
-</script>
+<script src="dashboard.js"></script>
 </body>
 </html>

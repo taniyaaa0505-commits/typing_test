@@ -20,22 +20,19 @@ let totalCorrectChars = 0;
 let totalTypedChars   = 0;
 
 // ── Helpers ───────────────────────────────────────────────────
-
-// Standard net WPM: (correct chars / 5) / elapsed minutes
 function calcWPM() {
-  const elapsed = (TOTAL_TIME - time) / 60; // minutes
+  const elapsed = (TOTAL_TIME - time) / 60;
   if (elapsed <= 0) return 0;
   return Math.round((totalCorrectChars / 5) / elapsed);
 }
 
-// Blended accuracy across all sentences + current in-progress chars
 function calcAccuracy(correctNow, typedNow) {
   const totalC = totalCorrectChars + correctNow;
   const totalT = totalTypedChars   + typedNow;
   return totalT === 0 ? 100 : Math.round((totalC / totalT) * 100);
 }
 
-// ── Load a random sentence ────────────────────────────────────
+// ── Load sentence ─────────────────────────────────────────────
 function loadSentence() {
   currentText = texts[Math.floor(Math.random() * texts.length)];
   textDisplay.innerHTML = '';
@@ -51,14 +48,12 @@ function loadSentence() {
 // ── Input handler ─────────────────────────────────────────────
 input.addEventListener('input', () => {
 
-  // Start timer on first keystroke
   if (!started) {
     started = true;
     interval = setInterval(() => {
       time--;
       timeDisplay.innerText = time;
-      wpmDisplay.innerText  = calcWPM(); // refresh WPM every second
-
+      wpmDisplay.innerText  = calcWPM();
       if (time <= 0) {
         clearInterval(interval);
         input.disabled = true;
@@ -70,7 +65,6 @@ input.addEventListener('input', () => {
   const typed = input.value;
   const spans = textDisplay.querySelectorAll('span');
 
-  // Mark each character correct / wrong / untouched
   let correctNow = 0;
   spans.forEach((span, i) => {
     span.classList.remove('current', 'correct', 'wrong');
@@ -80,17 +74,14 @@ input.addEventListener('input', () => {
     else                         span.classList.add('wrong');
   });
 
-  // Advance cursor caret
   if (typed.length < spans.length) {
     spans[typed.length].classList.add('current');
   }
 
-  // Live stats update
   const accuracy = calcAccuracy(correctNow, typed.length);
   accuracyDisplay.innerText = accuracy;
   wpmDisplay.innerText      = calcWPM();
 
-  // Sentence completed — bank stats, load next
   if (typed === currentText) {
     totalTypedChars   += typed.length;
     totalCorrectChars += correctNow;
@@ -100,14 +91,13 @@ input.addEventListener('input', () => {
 
 // ── End of test ───────────────────────────────────────────────
 function endTest() {
-  // Bank any partially typed chars from the current sentence
+  // Bank partial sentence
   const typed = input.value;
   const spans = textDisplay.querySelectorAll('span');
   let correctNow = 0;
   spans.forEach((span, i) => {
     if (typed[i] != null && typed[i] === span.innerText) correctNow++;
   });
-  // Don't double-bank if sentence was completed exactly
   if (typed !== currentText) {
     totalTypedChars   += typed.length;
     totalCorrectChars += correctNow;
@@ -117,27 +107,62 @@ function endTest() {
   const finalAccuracy = totalTypedChars === 0
     ? 100
     : Math.round((totalCorrectChars / totalTypedChars) * 100);
+  const finalNet = Math.round(finalWPM * (finalAccuracy / 100));
+
+  // ── Persist to localStorage for dashboard ────────────────
+  saveSession(finalWPM, finalAccuracy, finalNet);
 
   if (typeof window.showResults === 'function') {
     window.showResults(finalWPM, finalAccuracy, totalCorrectChars);
   }
 }
 
+// ── Save session to localStorage ──────────────────────────────
+function saveSession(wpm, accuracy, net) {
+  try {
+    // Sessions array
+    const raw = localStorage.getItem('tm_sessions');
+    const sessions = raw ? JSON.parse(raw) : [];
+    sessions.push({ wpm, accuracy, net, date: new Date().toISOString() });
+    if (sessions.length > 20) sessions.splice(0, sessions.length - 20);
+    localStorage.setItem('tm_sessions', JSON.stringify(sessions));
+
+    // Personal bests
+    if (wpm > (parseInt(localStorage.getItem('tm_bestWpm')) || 0))
+      localStorage.setItem('tm_bestWpm', wpm);
+    if (accuracy > (parseInt(localStorage.getItem('tm_bestAcc')) || 0))
+      localStorage.setItem('tm_bestAcc', accuracy);
+    if (net > (parseInt(localStorage.getItem('tm_bestNet')) || 0))
+      localStorage.setItem('tm_bestNet', net);
+
+    // Streak
+    const today = new Date().toDateString();
+    const rawStreak = localStorage.getItem('tm_streak');
+    const streak = rawStreak ? JSON.parse(rawStreak) : { count: 0, lastDate: null };
+    if (streak.lastDate !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const newCount = streak.lastDate === yesterday.toDateString()
+        ? streak.count + 1 : 1;
+      localStorage.setItem('tm_streak', JSON.stringify({ count: newCount, lastDate: today }));
+    }
+  } catch(e) {
+    console.warn('Could not save session:', e);
+  }
+}
+
 // ── Restart ───────────────────────────────────────────────────
 restartButton.addEventListener('click', () => {
   clearInterval(interval);
-
   time              = TOTAL_TIME;
   started           = false;
   totalCorrectChars = 0;
   totalTypedChars   = 0;
   interval          = null;
-
   timeDisplay.innerText     = time;
   wpmDisplay.innerText      = 0;
   accuracyDisplay.innerText = 100;
   input.disabled            = false;
-
   loadSentence();
   input.focus();
 });
