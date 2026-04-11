@@ -8,7 +8,7 @@ a:["apple","ant","angle","animal","arrow",'admire','aromatic','abacus','anchor']
 b:["ball","bat","banana","book","butterfly",'bingo','benzene','blackberry','beauties'],
 c:["capture","curtain","chair","cake","cloud",'camera','creative','costume','community','colorful','coffee'],
 d:["discourage","dinner","develop","desperate","dolphin",'debate','decorate','discriminate','downward'],
-e:["encouraging","enthusiatic","expensive","extraordinary","engine",'eccentric','electrifying','established'],
+e:["encouraging","enthusiastic","expensive","extraordinary","engine",'eccentric','electrifying','established'],
 f:["fish","frog","flower","flag","fire"],
 g:["goat","grape","guitar","garden","ghost"],
 h:["hat","house","horse","heart","home"],
